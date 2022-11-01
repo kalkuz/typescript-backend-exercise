@@ -3,13 +3,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-import { PublicPatient } from "./services/patientService";
+import { PublicPatient } from "./data/patients";
 
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 const express = require('express');
 const cors = require('cors');
 
 const patientService = require('./services/patientService');
+const diagnoseService = require('./services/diagnoseService');
 
 const app = express();
 app.use(express.json());
@@ -17,6 +18,10 @@ app.use(cors());
 
 app.get('/api/ping', (_: any, res: { send: (arg0: string) => void; }) => {
   res.send('pong');
+});
+
+app.get('/api/diagnoses', (_: any, res: { send: (arg0: string) => void; }) => {
+  res.send(diagnoseService.getDiagnoses());
 });
 
 app.get('/api/patients', (_: any, res: { send: (arg0: string) => void; }) => {
