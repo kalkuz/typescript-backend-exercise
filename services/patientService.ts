@@ -4,21 +4,32 @@ const patients = require("../data/patients.json") as Array<Patient>;
 
 const { v1 } = require('uuid');
 
-type Patient = {
-  id: string,
-  name: string,
-  dateOfBirth: string,
-  ssn: string,
-  gender: "male" | "female" | "other",
-  occupation: string,
-};
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface Entry {
+}
 
-type PatientNonSensitive = Omit<Patient, "id" | "ssn">;
+enum Gender {
+  Male = "male",
+  Female = "female",
+  Other = "other"
+}
+
+interface Patient {
+  id: string;
+  name: string;
+  ssn: string;
+  occupation: string;
+  gender: Gender;
+  dateOfBirth: string;
+  entries: Entry[]
+}
+
+export type PublicPatient = Omit<Patient, 'ssn' | 'entries'>;
 
 const getPatients = (): Patient[] => patients;
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-const getPatientsNonSensitive = (): PatientNonSensitive[] => patients
-  .map(({ id, name, dateOfBirth, gender, occupation }) => ({ id, name, dateOfBirth, gender, occupation }));
+const getPatientsNonSensitive = (): PublicPatient[] => patients
+  .map(({ id, name, dateOfBirth, gender, occupation, entries }) => ({ id, name, dateOfBirth, gender, occupation, entries: entries || []}));
 
 const addPatient = (data: Patient): Patient => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call

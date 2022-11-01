@@ -2,6 +2,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-var-requires */
+
+import { PublicPatient } from "./services/patientService";
+
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 const express = require('express');
 const cors = require('cors');
@@ -18,6 +21,10 @@ app.get('/api/ping', (_: any, res: { send: (arg0: string) => void; }) => {
 
 app.get('/api/patients', (_: any, res: { send: (arg0: string) => void; }) => {
   res.send(patientService.getPatientsNonSensitive());
+});
+
+app.get('/api/patients/:id', (req: any, res: { send: (arg0: string) => void; }) => {
+  res.send(patientService.getPatients().find((p: PublicPatient) => p.id === req.params.id));
 });
 
 app.post('/api/patients', (req: any, res: { send: (arg0: string) => void; }) => {
